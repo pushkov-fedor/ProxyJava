@@ -1,13 +1,12 @@
 package Info;
 
 import java.nio.ByteBuffer;
-
 public class AuthInfo {
     byte socksVersion;
     byte numbOfAuthMethods;
     byte[] authMethods;
 
-    public static final byte myValideAuthMethod = 0x00;
+    public static final byte myValideAuthMethod = GlobalConstants.noAuth;
 
     public String toString(){
         String str = "";

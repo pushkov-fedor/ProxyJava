@@ -19,7 +19,7 @@ public class ConnectInfo {
 
     public String toString(){
         String str = "";
-        if(addressType==0x01) for(byte b: IPv4Address) str+= " | " + (b & 0xFF);
+        if(addressType==GlobalConstants.addressTypeIpv4) for(byte b: IPv4Address) str+= " | " + (b & 0xFF);
         else str += " | " + new String(domainName);
         ByteBuffer buffer = ByteBuffer.wrap(portNumber);
         return "version: " + (socksVersion) + "\ncommand code: " + commandCode + "\naddressType: " + addressType + "\naddress: "
@@ -40,13 +40,13 @@ public class ConnectInfo {
         IPv4Address = new byte[4];
         IPv6Address = new byte[16];
         switch (addressType){
-            case 0x01:
+            case GlobalConstants.addressTypeIpv4:
                 for(int i = 0; i < 4; i++){
                     IPv4Address[i] = (byte) (bytes[cursor]);
                     cursor++;
                 }
                 break;
-            case 0x03:
+            case GlobalConstants.addressTypeDomain:
                 nameLen = bytes[cursor];
                 cursor++;
                 domainName = new byte[nameLen];
@@ -55,7 +55,7 @@ public class ConnectInfo {
                     cursor++;
                 }
                 break;
-            case 0x04:
+            case GlobalConstants.getAddressTypeIpv6:
                 for(int i = 0; i < 16; i++){
                     IPv6Address[i] = (byte) (bytes[cursor]);
                     cursor++;
@@ -71,10 +71,10 @@ public class ConnectInfo {
     //region Getters Modified
     public String getIPv4AddressString(){
         int byte0, byte1, byte2, byte3;
-        byte0 = IPv4Address[0] & 0xFF;
-        byte1 = IPv4Address[1] & 0xFF;
-        byte2 = IPv4Address[2] & 0xFF;
-        byte3 = IPv4Address[3] & 0xFF;
+        byte0 = IPv4Address[0] & GlobalConstants.someBytesMagic;
+        byte1 = IPv4Address[1] & GlobalConstants.someBytesMagic;
+        byte2 = IPv4Address[2] & GlobalConstants.someBytesMagic;
+        byte3 = IPv4Address[3] & GlobalConstants.someBytesMagic;
 
         String res = byte0+"."+byte1+"."+byte2+"."+byte3;
         return res;
