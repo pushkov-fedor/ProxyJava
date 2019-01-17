@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 
-public class DnsEntity implements EntityReadable{
+public class DnsEntity implements EntityReadable, EntityClosable{
 
     ProxyEntity proxyEntity;
 
@@ -23,6 +23,11 @@ public class DnsEntity implements EntityReadable{
         proxyEntity.buffer.clear();
         proxyEntity.address = response.getSectionArray(1)[0].rdataToString();
         proxyEntity.establishConnection();
+    }
+
+    public void close(SelectionKey key) throws IOException {
+        key.channel().close();
+        key.cancel();
     }
 
 }

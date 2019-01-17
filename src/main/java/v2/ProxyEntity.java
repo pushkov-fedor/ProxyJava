@@ -11,7 +11,7 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
 
-public class ProxyEntity implements EntityReadable{
+public class ProxyEntity implements EntityReadable, EntityClosable{
 
     ByteBuffer buffer;
     Selector selector;
@@ -147,6 +147,12 @@ public class ProxyEntity implements EntityReadable{
         buffer.compact();
 
 
+    }
+
+    public void close(SelectionKey key) throws IOException {
+        key.channel().close();
+        key.cancel();
+        dns.close();
     }
 
     public void establishConnection() throws IOException {

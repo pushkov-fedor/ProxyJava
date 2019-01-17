@@ -71,11 +71,9 @@ public class Proxy {
                         }
                     }catch (Exception e){
                         e.printStackTrace();
-                        ProxyEntity pe = (ProxyEntity) key.attachment();
-                        key.cancel();
-                        pe.channel.close();
-                        if(pe.client)pe.dns.close();
-                        System.out.println("Something wrong");
+                        EntityClosable pe = (EntityClosable) key.attachment();
+                        pe.close(key);
+                        System.out.println("[INFO} Socket is closed.");
                     }
                 }
             }
