@@ -152,7 +152,7 @@ public class ProxyEntity implements EntityReadable, EntityClosable{
     public void close(SelectionKey key) throws IOException {
         key.channel().close();
         key.cancel();
-        dns.close();
+        if(client)dns.close();
     }
 
     public void establishConnection() throws IOException {
